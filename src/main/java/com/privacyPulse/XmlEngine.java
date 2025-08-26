@@ -11,8 +11,6 @@ public class XmlEngine{
 	public XmlEngine(String _filename){
 		this.filename = _filename;
 		saxParser(fileReader());
-		findResult(list);
-		clean(response);
 	}
 
 	private InputStream fileReader(){
@@ -96,19 +94,19 @@ public class XmlEngine{
 	}
 
 
-	public List<String> response = new ArrayList<>();
-	private static String input = "Here is my id : chlorine-finder@testchlorine.com and my machine inf o:  124.234.223.12 , ok ?";
-	private void findResult(List<RegexFinder> regexFinders){
-		for(RegexFinder finder: regexFinders){
+	public List<String> find(String input){
+		 List<String> response = new ArrayList<>();
+		for(RegexFinder finder: list){
 			response.addAll(finder.find(input));
 		}
+		return clean(response);
 	}
 
-	private void clean(List<String> res){
-		List<String> list1 = new ArrayList<>();
+	private List<String> clean(List<String> res){
+		List<String> response = new ArrayList<>();
 		for(String test: res){
-			if(!test.isEmpty()) list1.add(test);
+			if(!test.isEmpty()) response.add(test);
 		}
-		response = list1;
+		return response;
 	}
 }
