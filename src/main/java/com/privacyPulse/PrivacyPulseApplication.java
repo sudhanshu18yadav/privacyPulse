@@ -10,7 +10,7 @@ public class PrivacyPulseApplication {
 		SpringApplication.run(PrivacyPulseApplication.class, args);
 
 		var f1 = new XmlEngine("src/main/resources/finders_default.xml");
-		System.out.println("privacy pulse started working");
+		System.out.println("privacy pulse started working: "+ f1.response());
 	}
 
 }

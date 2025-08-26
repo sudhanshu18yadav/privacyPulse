@@ -94,10 +94,7 @@ public class XmlEngine{
 	}
 
 
-
-
-
-	private List<String> response = new ArrayList<>();
+	public List<String> response = new ArrayList<>();
 
 	private void findResult(List<RegexFinder> regexFinders){
 		for(RegexFinder finder: regexFinders){
