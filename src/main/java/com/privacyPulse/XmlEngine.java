@@ -2,6 +2,9 @@ package com.privacyPulse;
 
 import java.io.*;
 import javax.xml.parsers.*;
+import java.util.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlEngine{
 	private String filename;
@@ -19,18 +22,20 @@ public class XmlEngine{
 		}
 		return stream;
 	}
+	
 	private List<RegexFinder> list = new ArrayList<>();
+	
 	private void saxParser(InputStream inputStream){
 		try{
 			SAXParserFactory sAXParserFactory = SAXParserFactory.newInstance();
 			SAXParser saxParser = sAXParserFactory.newSAXParser();
 
-			DefaultHandler dh = new Defaulthandler(){
+			DefaultHandler dh = new DefaultHandler(){
 				
 				boolean bName = false, bPattern = false, bClass = false, bEnabled = false;
-				String name = "", pattern = "", class = "", strEnabled = "";
+				String name = "", pattern = "", className = "", strEnabled = "";
 
-				void startElement(String uri, String localName, String qName, Attributes attributes){
+				public void startElement(String uri, String localName, String qName, Attributes attributes){
 					if(qName.equalsIgnoreCase("NAME")){
 						bName = true;
 					}
@@ -45,7 +50,7 @@ public class XmlEngine{
 					}
 				}
 
-				void endElement(String uri, String localName, String qName){
+				public void endElement(String uri, String localName, String qName){
 					if(qName.equalsIgnoreCase("NAME")){
 						bName = false; name = name.trim();
 					}
@@ -56,23 +61,22 @@ public class XmlEngine{
 						bEnabled = false; strEnabled = strEnabled.trim();
 					}
 					else if(qName.equalsIgnoreCase("CLASS")){
-						bClass = false; class = class.trim();
+						bClass = false; className = className.trim();
 					}
 					else if(qName.equalsIgnoreCase("FINDER")){
 						list.add(new RegexFinder(name, pattern));
 					 	
-					 	name = "", pattern = "", class = "", strEnabled = "";
+					 	name = ""; pattern = ""; className = ""; strEnabled = "";
 					}
-
 				}
 
-				void characters(char[] ch, int start, int length){
+				public void characters(char[] ch, int start, int length){
 					String str = new String(ch, start, length);
 					if(bName) {
 						name += str;
 					}
 					else if(bClass){
-						class += str;
+						className += str;
 					} 
 					else if(bPattern){
 						pattern += str;
@@ -81,9 +85,11 @@ public class XmlEngine{
 						strEnabled += str;
 					}
 				}
-			} 
+			};
 
 			saxParser.parse(inputStream,dh);
+		} catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 }
