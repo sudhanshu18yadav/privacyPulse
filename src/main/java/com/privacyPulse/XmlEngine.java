@@ -8,9 +8,19 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class XmlEngine{
 	private String filename;
+	private List<RegexFinder> list = new ArrayList<>();
+
 	public XmlEngine(String _filename){
 		this.filename = _filename;
 		saxParser(fileReader());
+	}
+
+	public List<String> find(String input){
+		 List<String> response = new ArrayList<>();
+		for(RegexFinder finder: list){
+			response.addAll(finder.find(input));
+		}
+		return clean(response);
 	}
 
 	private InputStream fileReader(){
@@ -22,9 +32,7 @@ public class XmlEngine{
 		}
 		return stream;
 	}
-	
-	private List<RegexFinder> list = new ArrayList<>();
-	
+		
 	private void saxParser(InputStream inputStream){
 		try{
 			SAXParserFactory sAXParserFactory = SAXParserFactory.newInstance();
@@ -93,14 +101,6 @@ public class XmlEngine{
 		}
 	}
 
-
-	public List<String> find(String input){
-		 List<String> response = new ArrayList<>();
-		for(RegexFinder finder: list){
-			response.addAll(finder.find(input));
-		}
-		return clean(response);
-	}
 
 	private List<String> clean(List<String> res){
 		List<String> response = new ArrayList<>();
