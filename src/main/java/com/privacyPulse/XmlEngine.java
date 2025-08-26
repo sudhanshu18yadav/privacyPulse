@@ -10,7 +10,9 @@ public class XmlEngine{
 	private String filename;
 	public XmlEngine(String _filename){
 		this.filename = _filename;
-		fileReader();
+		saxParser(fileReader());
+		findResult(list);
+		clean(response);
 	}
 
 	private InputStream fileReader(){
@@ -95,10 +97,18 @@ public class XmlEngine{
 
 
 	public List<String> response = new ArrayList<>();
-
+	private static String input = "Here is my id : chlorine-finder@testchlorine.com and my machine inf o:  124.234.223.12 , ok ?";
 	private void findResult(List<RegexFinder> regexFinders){
 		for(RegexFinder finder: regexFinders){
 			response.addAll(finder.find(input));
 		}
+	}
+
+	private void clean(List<String> res){
+		List<String> list1 = new ArrayList<>();
+		for(String test: res){
+			if(!test.isEmpty()) list1.add(test);
+		}
+		response = list1;
 	}
 }
