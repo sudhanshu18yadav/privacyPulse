@@ -92,4 +92,16 @@ public class XmlEngine{
 			e.printStackTrace();
 		}
 	}
+
+
+
+
+
+	private List<String> response = new ArrayList<>();
+
+	private void findResult(List<RegexFinder> regexFinders){
+		for(RegexFinder finder: regexFinders){
+			response.addAll(finder.find(input));
+		}
+	}
 }

@@ -1,11 +1,26 @@
 package com.privacyPulse;
 
+import java.util.*;
+import java.util.regex.*;
+
+
 public class RegexFinder{
 	private String name;
-	private String pattern;
+	private Pattern pattern;
 
+	private static int DEFAULT_FLAG = 138;
 	public RegexFinder(String _name, String _pattern){
 		this.name = _name;
-		this.pattern = _pattern;
+		this.pattern = Pattern.Compile(_pattern, DEFAULT_FLAG);
+	}
+
+	public List<String> find(String input){
+		List<String> result = new ArrayList<>();
+		Matcher matcher = pattern.matcher(input);
+
+		while(matcher.find()){
+			result.add(input.substring(input.start(), input.end()));
+		}
+		return result;
 	}
 }
